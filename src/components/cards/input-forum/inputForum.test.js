@@ -1,0 +1,3 @@
+describe('<inputForum/>', () => {
+   it('success', () => { })
+})

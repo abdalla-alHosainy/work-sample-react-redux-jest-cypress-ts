@@ -9,7 +9,7 @@ describe('<App />', () => {
    })
    it('should render the app ', () => {
       const app = findByTest(component, 'app')
-      console.log(app.debug());
+      // console.log(app.debug());
       expect(app.length).toBe(1)
    })
    it('should render the sidebar ', () => {

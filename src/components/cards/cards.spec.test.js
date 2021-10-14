@@ -3,13 +3,13 @@ import { shallow } from 'enzyme';
 import { findByTest } from '../../../utils';
 import Cards from './cards'
 
-describe('Just The first test', () => {
+describe('<Cards/>', () => {
    let component
    beforeEach(() => {
       component = shallow(<Cards />)
    })
    it('should Run smoothly', () => {
-      const item = findByTest(component, 'testing')
-      expect(item.length).toBe(1)
+      // const item = findByTest(component, 'cards-container')
+      // expect(item.length).toBe(1)
    })
 })

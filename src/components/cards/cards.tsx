@@ -1,12 +1,13 @@
 import * as React from "react"
 import styled from "@emotion/styled"
+import Inputforum from "./input-forum/Inputforum"
+import OutputCard from "./output-card/OutputCard"
 
 function Cards() {
   return (
-    <Section id="cards-container" data-test="cards-component">
-      <h1 className={"class"} data-test-id="testing">
-        Test a text
-      </h1>
+    <Section id="cards-container" data-test="cards-container">
+      <Inputforum />
+      <OutputCard />
     </Section>
   )
 }
