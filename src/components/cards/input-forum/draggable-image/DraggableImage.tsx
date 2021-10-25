@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "@emotion/styled"
-import SVG from "../../../../assets/svg"
-import theme from "../../../../style"
+import SVG from "@assets/svg/index"
+import theme from "@style"
 import { useDropzone } from "react-dropzone"
 import { useDispatch } from "react-redux"
-import { setImage } from "../../../../redux/cardSlice"
+import { setImage } from "@redux_local/cardSlice"
 import * as yup from "yup"
 const color = theme.cards.color
 const font = theme.cards.font

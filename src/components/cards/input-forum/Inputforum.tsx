@@ -1,13 +1,13 @@
 import React from "react"
 import styled from "@emotion/styled"
-import theme from "../../../style"
+import theme from "@style"
 import DraggableImage from "./draggable-image/DraggableImage"
 import { Formik, Form, FormikProps } from "formik"
 import * as Yup from "yup"
 import Input from "../../../layout/forum/Input"
 import SelectInput from "../../../layout/forum/SelectInput"
 import { useDispatch } from "react-redux"
-import { setForumData } from "../../../redux/cardSlice"
+import { setForumData } from "@redux_local/cardSlice"
 
 const color = theme.cards.color
 const font = theme.cards.font

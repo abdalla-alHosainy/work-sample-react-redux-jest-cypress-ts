@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Field, ErrorMessage, FieldProps } from "formik"
 import styled from "@emotion/styled"
-import theme from "../../style"
+import theme from "@style"
 const color = theme.layout.color
 const font = theme.layout.font
 

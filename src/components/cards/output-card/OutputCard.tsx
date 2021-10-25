@@ -1,12 +1,12 @@
 import * as React from "react"
 import styled from "@emotion/styled"
-import theme from "../../../style"
+import theme from "@style"
 import { useSelector } from "react-redux"
-import { TStore } from "../../../redux/store"
-import pressCard from "../../../assets/images/press.png"
-import securityCard from "../../../assets/images/security.png"
-import visitorCard from "../../../assets/images/visitor.png"
-import stuffCard from "../../../assets/images/stuff.png"
+import { TStore } from "@redux_local/store"
+import pressCard from "@assets/images/press.png"
+import securityCard from "@assets/images/security.png"
+import visitorCard from "@assets/images/visitor.png"
+import stuffCard from "@assets/images/stuff.png"
 const font = theme.cards.font
 function changeTextColor(type: string) {
   const root = document.querySelector(":root") as HTMLElement

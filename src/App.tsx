@@ -1,7 +1,7 @@
 import * as React from "react"
 import Cards from "./components/cards/cards"
 import styled from "@emotion/styled"
-import theme from "./style"
+import theme from "@style"
 import SVG from "./assets/svg"
 import Hero from "./components/hero/Hero"
 import Gantt from "./components/gantt/Gantt"
