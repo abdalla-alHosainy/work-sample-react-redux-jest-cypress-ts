@@ -1,3 +1,0 @@
-describe('<inputForum/>', () => {
-   it('success', () => { })
-})
