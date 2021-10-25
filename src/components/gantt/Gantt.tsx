@@ -1,4 +1,3 @@
-import * as React from "react"
 import styled from "@emotion/styled"
 function Gantt() {
   return <Section id="gantt-container">Gantt</Section>
