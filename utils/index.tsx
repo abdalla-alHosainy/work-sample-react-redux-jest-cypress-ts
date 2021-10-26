@@ -8,7 +8,7 @@ import { store } from "../src/redux/store"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom"
 export const setup = (component: ReactElement) => {
-  render(<Provider store={store}>{component}</Provider>)
+  return render(<Provider store={store}>{component}</Provider>)
 }
 
 // export const findByTest = (component, attr) => {

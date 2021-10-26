@@ -38,33 +38,33 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState }) => {
         onSubmit={() => handelSubmit()}
       >
         <Form>
-          <FiledHolder>
+          <FiledHolder data-testid="task-form-title">
             <Field type="text" name="title">
               {({ field, meta }: FieldProps) => {
                 return (
                   <input
                     type="text"
                     {...field}
-                    className={`${(meta.touched && meta.error) ?? "error"}`}
+                    className={`${meta.touched && meta.error ? "error" : ""}`}
                   />
                 )
               }}
             </Field>
-            <ErrorMessage name="title" component={Error} />
+            <ErrorMessage name="title" data-testid="task-form-title-error" />
           </FiledHolder>
-          <FiledHolder>
+          <FiledHolder data-testid="task-form-start-date">
             <Field as="select" name="startDate">
               {Days}
             </Field>
             <ErrorMessage name="startDate" component={Error} />
           </FiledHolder>
-          <FiledHolder>
+          <FiledHolder data-testid="task-form-end-date">
             <Field as="select" name="endDate">
               {Days}
             </Field>
             <ErrorMessage name="endDate" component={Error} />
           </FiledHolder>
-          <FiledHolder>
+          <FiledHolder data-testid="task-form-percentage">
             <Field name="percentage" type="number" max="100" min="0" />
             <ErrorMessage name="percentage" component={Error} />
           </FiledHolder>
@@ -89,7 +89,7 @@ const Holder = styled.div`
     opacity: 1 !important;
   }
 `
-const Error = styled.div``
+const Error = styled.span``
 const FiledHolder = styled.div``
 const Button = styled.button``
 
