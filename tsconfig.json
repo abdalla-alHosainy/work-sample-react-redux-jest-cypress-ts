@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "plugins": [
       {
@@ -32,25 +33,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@types": [
-        "src/types/types.ts"
-      ],
-      "@utils": [
-        "utils/index.tsx"
-      ],
-      "@style": [
-        "src/style/style.ts"
-      ],
-      "@redux_local/*": [
-        "src/redux/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-    }
+    "resolveJsonModule": true
   },
   "include": [
     "./src/**/*"
