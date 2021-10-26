@@ -2,12 +2,13 @@
 // import { applyMiddleware, createStore } from 'redux';
 // import rootReducer from './../src/reducers';
 // import { middlewares } from './../src/createStore';
-import React from "react"
+import React, { ReactElement } from "react"
 import { Provider } from "react-redux"
 import { store } from "../src/redux/store"
-
-export const setup = (component: React.FC) => {
-  return <Provider store={store}>{component}</Provider>
+import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
+export const setup = (component: ReactElement) => {
+  render(<Provider store={store}>{component}</Provider>)
 }
 
 // export const findByTest = (component, attr) => {

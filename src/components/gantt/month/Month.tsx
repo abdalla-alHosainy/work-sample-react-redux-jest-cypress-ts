@@ -1,4 +1,5 @@
 import { project } from "@types"
+import ProjectsForum from "./projects forum/ProjectsForum"
 
 interface month {
   month: {
@@ -9,6 +10,6 @@ interface month {
   }
 }
 const Month: React.FC<month> = ({ month }) => {
-  return <div>{month.name}</div>
+  return <ProjectsForum projects={month.projects} days={month.days} />
 }
 export default Month
