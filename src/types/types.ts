@@ -1,5 +1,5 @@
 export type task = {
-  id: number
+  id: string
   title: string
   startDate: string | number
   endDate: string | number

@@ -33,7 +33,25 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@types": [
+        "src/types/types.ts"
+      ],
+      "@utils": [
+        "utils/index.tsx"
+      ],
+      "@style": [
+        "src/style/style.ts"
+      ],
+      "@redux_local/*": [
+        "src/redux/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+    }
   },
   "include": [
     "./src/**/*"
