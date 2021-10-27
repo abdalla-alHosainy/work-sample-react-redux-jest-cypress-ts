@@ -69,7 +69,9 @@ const SVG = {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.081 13.297">
         <path
           id="Path_41"
+          data-name="Path 41"
           d="M11.419,13.3H3.662a1.108,1.108,0,0,1-1.108-1.108V3.324h9.973v8.865A1.108,1.108,0,0,1,11.419,13.3M6.432,5.54a.554.554,0,0,0-1.108,0v4.986a.554.554,0,1,0,1.108,0Zm3.324,0a.554.554,0,1,0-1.108,0v4.986a.554.554,0,1,0,1.108,0Zm3.324-2.77H2V1.662H5.324V.831A.832.832,0,0,1,6.155,0h2.77a.832.832,0,0,1,.831.831v.831h3.324ZM6.432,1.662H8.648V1.108H6.432Z"
+          transform="translate(-2)"
           fill="#ff2727"
           fillRule="evenodd"
         />
@@ -82,7 +84,30 @@ const SVG = {
         <path
           id="Path_24"
           d="M12,0A12,12,0,1,0,24,12,12,12,0,0,0,12,0Zm6,13H13v5H11V13H6V11h5V6h2v5h5Z"
-          fill="#253e7d"
+        />
+      </svg>
+    )
+  },
+  LeftArrow: () => {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.619 15.39">
+        <path
+          id="Path_60"
+          data-name="Path 60"
+          d="M14.619,1.924,12.658,0,5,7.695l7.658,7.695,1.96-1.924L8.847,7.695Z"
+          transform="translate(-5)"
+        />
+      </svg>
+    )
+  },
+  RightArrow: () => {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.619 15.39">
+        <path
+          id="Path_60"
+          data-name="Path 60"
+          d="M14.619,1.924,12.658,0,5,7.695l7.658,7.695,1.96-1.924L8.847,7.695Z"
+          transform="translate(14.619 15.39) rotate(180)"
         />
       </svg>
     )
