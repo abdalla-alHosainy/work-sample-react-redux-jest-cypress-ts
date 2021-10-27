@@ -27,8 +27,8 @@ const Task: React.FC<taskTemplate> = ({ task, days, monthName }) => {
       {!editMode && (
         <TaskContent>
           <Title data-testid="task-title">{task.title}</Title>
-          <Number data-testid="task-start-date">{task.startDate + monthNameShort} </Number>
-          <Number data-testid="task-end-date">{task.endDate + monthNameShort}</Number>
+          <Number data-testid="task-start-date">{task.startDate + " " + monthNameShort} </Number>
+          <Number data-testid="task-end-date">{task.endDate + " " + monthNameShort}</Number>
           <Number data-testid="task-percentage">{task.percentage + "%"}</Number>
           <Button data-testid="task-edit-button" onClick={() => handleEdit()}>
             <SVG.Edit />

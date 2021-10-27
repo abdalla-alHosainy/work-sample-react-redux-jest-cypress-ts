@@ -12,7 +12,7 @@ interface projects {
 const ProjectsHolder: React.FC<projects> = ({ projects, days, monthName }) => {
   return (
     <Holder>
-      <Background />
+      {/* <Background /> */}
       <div className="projects-holder">
         {projects &&
           projects.map((project: project) => {
@@ -25,6 +25,7 @@ const ProjectsHolder: React.FC<projects> = ({ projects, days, monthName }) => {
 const Holder = styled.div`
   position: relative;
   width: 26vw;
+  height: 100%;
   display: flex;
   flex-direction: column;
   .projects-holder {
@@ -33,7 +34,7 @@ const Holder = styled.div`
 `
 const Background = styled.div`
   z-index: 0;
-  width: 27%;
+  width: 26%;
   height: 81%;
   position: fixed;
   bottom: 2.5vh;

@@ -54,8 +54,8 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
     <Holder>
       <ProjectTitle>
         <Item data-testid="project-title">{project.title}</Item>
-        <Item data-testid="project-start-date">{minDate + monthNameShort}</Item>
-        <Item data-testid="project-end-date">{maxDate + monthNameShort}</Item>
+        <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
+        <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
         <Item data-testid="project-percentage">{meanPercentage + "%"}</Item>
         <Color data-testid="project-color" style={{ backgroundColor: project.color }} />
         <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
