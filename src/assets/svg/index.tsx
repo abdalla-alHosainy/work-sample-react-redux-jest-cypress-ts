@@ -76,6 +76,17 @@ const SVG = {
       </svg>
     )
   },
+  AddTask: () => {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path
+          id="Path_24"
+          d="M12,0A12,12,0,1,0,24,12,12,12,0,0,0,12,0Zm6,13H13v5H11V13H6V11h5V6h2v5h5Z"
+          fill="#253e7d"
+        />
+      </svg>
+    )
+  },
 }
 
 export default SVG

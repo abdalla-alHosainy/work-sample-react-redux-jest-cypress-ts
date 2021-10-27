@@ -12,22 +12,22 @@ const taskData: task = {
 }
 
 describe("<Task/> Render Elements", () => {
-  beforeEach(() => setup(<Task task={taskData} days={30} />))
+  beforeEach(() => setup(<Task task={taskData} days={30} monthName="January" />))
   it("should Render task Title", () => {
     const title = screen.getByTestId("task-title")
     expect(title).toHaveTextContent(taskData.title)
   })
   it("should Render task start Date", () => {
     const startDate = screen.getByTestId("task-start-date")
-    expect(startDate).toHaveTextContent(`${taskData.startDate}`)
+    expect(startDate.textContent).toContain(`${taskData.startDate}`)
   })
   it("should Render task End Date", () => {
     const endDate = screen.getByTestId("task-end-date")
-    expect(endDate).toHaveTextContent(`${taskData.endDate}`)
+    expect(endDate.textContent).toContain(`${taskData.endDate}`)
   })
   it("should Render task Percentage", () => {
     const percentage = screen.getByTestId("task-percentage")
-    expect(percentage).toHaveTextContent(`${taskData.percentage}`)
+    expect(percentage.textContent).toContain(`${taskData.percentage}`)
   })
   it("should Render Delete & Edit Buttons", () => {
     const buttons = screen.getAllByRole("button")
@@ -37,7 +37,7 @@ describe("<Task/> Render Elements", () => {
 
 describe("<Task/> on Edit Click", () => {
   it("should Render The Edit Forum", () => {
-    setup(<Task task={taskData} days={30} />)
+    setup(<Task task={taskData} days={30} monthName="January" />)
     const editButton = screen.getByTestId("task-edit-button")
     userEvent.click(editButton)
     const forum = screen.getByTestId("task-forum")

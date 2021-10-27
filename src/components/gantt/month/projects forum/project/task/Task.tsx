@@ -7,10 +7,12 @@ import Modal from "react-modal"
 interface taskTemplate {
   task: task
   days: number
+  monthName: string
 }
-const Task: React.FC<taskTemplate> = ({ task, days }) => {
+const Task: React.FC<taskTemplate> = ({ task, days, monthName }) => {
   const [editMode, setEditMode] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
+  const monthNameShort = monthName.slice(0, 3)
   function handleEdit() {
     setEditMode(true)
   }
@@ -22,9 +24,9 @@ const Task: React.FC<taskTemplate> = ({ task, days }) => {
       {!editMode && (
         <TaskContent>
           <Title data-testid="task-title">{task.title}</Title>
-          <Number data-testid="task-start-date">{task.startDate}</Number>
-          <Number data-testid="task-end-date">{task.endDate}</Number>
-          <Number data-testid="task-percentage">{task.percentage}</Number>
+          <Number data-testid="task-start-date">{task.startDate + monthNameShort} </Number>
+          <Number data-testid="task-end-date">{task.endDate + monthNameShort}</Number>
+          <Number data-testid="task-percentage">{task.percentage + " %"}</Number>
           <Button data-testid="task-edit-button" onClick={() => handleEdit()}>
             <SVG.Edit />
           </Button>
