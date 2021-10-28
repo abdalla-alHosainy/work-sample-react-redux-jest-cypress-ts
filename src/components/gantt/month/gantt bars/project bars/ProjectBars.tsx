@@ -23,6 +23,10 @@ const ProjectBars: React.FC<component> = ({ project, days }) => {
   const minDate: any = _.min(tasksStartDates)
   const maxDate: any = _.max(tasksEndDates)
   const meanPercentage = _.mean(tasksPercentages)
+  function left() {
+    const unit = (1 / days) * 100
+    return `${unit * minDate - unit}%`
+  }
   function width() {
     const unit = (1 / days) * 100
     return `${unit * (maxDate - minDate)}%`
@@ -34,7 +38,7 @@ const ProjectBars: React.FC<component> = ({ project, days }) => {
     &:before {
       position: absolute;
       top: 0;
-      left: 0;
+      left: ${left()};
       background-color: ${lighten(0.43, project.color)};
       content: "";
       width: ${width()};

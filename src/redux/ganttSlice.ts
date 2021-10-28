@@ -1,4 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
+import theme from "@style"
+import { v4 as uuid } from "uuid"
+import _ from "lodash"
+const colorTheme = theme.gantt.color
 const gantt = createSlice({
   name: "gantt-chart",
   initialState: [
@@ -413,8 +417,8 @@ const gantt = createSlice({
     },
     addTask: (state, action) => {
       const { ids, title, startDate, endDate, percentage } = action.payload
-      const task = state[ids[0]].projects[ids[1]].tasks
-      task.push({
+      const tasks = state[ids[0]].projects[ids[1]].tasks
+      tasks.push({
         id: ids[2],
         title,
         startDate: parseInt(startDate),
@@ -422,13 +426,44 @@ const gantt = createSlice({
         percentage,
       })
     },
-    //  setForumData: (state, action) => {
-    //    console.log(action.payload)
-    //    state.fullName = action.payload.fullName
-    //    state.currentPosition = action.payload.currentPosition
-    //    state.accessLevel = action.payload.accessLevel
-    //  },
+    deleteTask: (state, action) => {
+      const { ids } = action.payload
+      const tasks = state[ids[0]].projects[ids[1]].tasks
+      _.remove(tasks, { id: ids[2] })
+    },
+    addProject: (state, action) => {
+      const {
+        id,
+        projectTitle,
+        projectColor,
+        taskTitle,
+        taskStartDate,
+        taskEndDate,
+        taskPercentage,
+      } = action.payload
+      const projects = state[id].projects
+      projects.push({
+        id: uuid(),
+        color: colorTheme[projectColor],
+        title: projectTitle,
+        tasks: [
+          {
+            id: uuid(),
+            title: taskTitle,
+            startDate: taskStartDate,
+            endDate: taskEndDate,
+            percentage: taskPercentage,
+          },
+        ],
+      })
+    },
+    editProject: (state, action) => {
+      const { ids, projectTitle, projectColor } = action.payload
+      const project = state[ids[0]].projects[ids[1]]
+      project.color = colorTheme[projectColor]
+      project.title = projectTitle
+    },
   },
 })
 export const ganttReducer = gantt.reducer
-export const { editTask, addTask } = gantt.actions
+export const { editTask, addTask, deleteTask, addProject, editProject } = gantt.actions

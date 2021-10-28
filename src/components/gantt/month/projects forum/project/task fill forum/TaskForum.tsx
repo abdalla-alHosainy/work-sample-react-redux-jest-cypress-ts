@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { editTask, addTask } from "@redux_local/ganttSlice"
 import SVG from "@assets/svg"
 import theme from "@style"
+import { useEffect, useRef } from "react"
 const color = theme.gantt.color
 const font = theme.gantt.font
 
@@ -18,7 +19,12 @@ interface component {
 }
 const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, editOrNew }) => {
   const dispatch = useDispatch()
-  let Days = []
+  const titleRef = useRef(null)
+
+  useEffect(() => {
+    titleRef.current.focus()
+  }, [])
+  let Days: any[] = []
   for (let i = 0; i < days; i++) {
     Days.push(<option key={i}>{i + 1}</option>)
   }
@@ -69,6 +75,8 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
               {({ field, meta }: FieldProps) => {
                 return (
                   <input
+                    placeholder="Task Title"
+                    ref={titleRef}
                     type="text"
                     {...field}
                     className={`${meta.touched && meta.error ? "error" : ""}`}
@@ -155,12 +163,14 @@ const Holder = styled.div`
   }
   input[type="number"] {
     width: 2.1vw;
+    text-align: center;
   }
   select {
     font-size: 0.9vw;
     padding: 0;
     margin-right: 0.9vw;
     height: 3.7vh;
+    text-align: center;
   }
   select,
   input {

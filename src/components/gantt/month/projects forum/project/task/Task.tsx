@@ -3,8 +3,10 @@ import styled from "@emotion/styled"
 import SVG from "@assets/svg"
 import TaskForum from "../task fill forum/TaskForum"
 import { useState } from "react"
-import Modal from "react-modal"
+import { useDispatch } from "react-redux"
+import { deleteTask } from "@redux_local/ganttSlice"
 import theme from "@style"
+import { darken, lighten } from "polished"
 const color = theme.gantt.color
 const font = theme.gantt.font
 interface taskTemplate {
@@ -16,26 +18,31 @@ interface taskTemplate {
 }
 const Task: React.FC<taskTemplate> = ({ task, days, monthName, monthId, projectId }) => {
   const [editMode, setEditMode] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteMode, setDeleteMode] = useState(false)
+  const dispatch = useDispatch()
   const monthNameShort = monthName.slice(0, 3)
   function handleEdit() {
     setEditMode(true)
   }
   function handleDelete() {
-    // setDeleteModal(true)
+    dispatch(deleteTask({ ids: [monthId, projectId, task.id] }))
   }
   return (
     <Holder data-testid="task-holder">
-      {!editMode && (
+      {!editMode && !deleteMode && (
         <TaskContent>
           <Title data-testid="task-title">{task.title}</Title>
           <Number data-testid="task-start-date">{task.startDate + " " + monthNameShort} </Number>
           <Number data-testid="task-end-date">{task.endDate + " " + monthNameShort}</Number>
           <Number data-testid="task-percentage">{task.percentage + "%"}</Number>
-          <Button data-testid="task-edit-button" onClick={() => handleEdit()}>
+          <Button className="edit" data-testid="task-edit-button" onClick={() => handleEdit()}>
             <SVG.Edit />
           </Button>
-          <Button data-testid="task-delete-button" onClick={() => handleDelete()}>
+          <Button
+            className="edit"
+            data-testid="task-delete-button"
+            onClick={() => setDeleteMode(true)}
+          >
             <SVG.Delete />
           </Button>
         </TaskContent>
@@ -49,19 +56,29 @@ const Task: React.FC<taskTemplate> = ({ task, days, monthName, monthId, projectI
           idsArray={[monthId, projectId, task.id]}
         />
       )}
-      <Modal isOpen={deleteModal} testId="task-delete-modal" />
+      {deleteMode && (
+        <DeleteTask data-testid="task-delete">
+          <span data-testid="task-delete-title"> You will delete {task.title} !! </span>
+          <button data-testid="task-delete-button-delete" onClick={() => handleDelete()}>
+            Delete
+          </button>
+          <button data-testid="task-delete-button-cancel" onClick={() => setDeleteMode(false)}>
+            Cancel
+          </button>
+        </DeleteTask>
+      )}
     </Holder>
   )
 }
 const Holder = styled.div`
   position: relative;
 
-  button {
+  button.edit {
     opacity: 0;
     transition: all 0.3s;
   }
   &:hover {
-    button {
+    button.edit {
       opacity: 0.4;
     }
   }
@@ -104,6 +121,46 @@ const Title = styled.span`
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+`
+const DeleteTask = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 4.7vh;
+  margin-top: -1vh;
+  margin-bottom: -1vh;
+  background-color: ${lighten(0.2, color.red)};
+  border-radius: 0.3vw;
+
+  span {
+    ${font.bold};
+    font-size: 0.9vw;
+    margin-right: 0.5vw;
+    color: #fff;
+  }
+  button {
+    ${font.bold}
+    font-size:0.7vw;
+    margin: 0.2vw;
+    border-radius: 0.3vw;
+    border: none;
+    cursor: pointer;
+    &:nth-of-type(1) {
+      color: #fff;
+      background-color: ${darken(0.2, color.red)};
+      &:hover {
+        background-color: ${color.red};
+      }
+    }
+    &:nth-of-type(2) {
+      background-color: ${darken(0.2, color.white)};
+      &:hover {
+        background-color: ${color.white};
+      }
+    }
+  }
 `
 
 export default Task

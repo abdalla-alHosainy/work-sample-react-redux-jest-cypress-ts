@@ -5,11 +5,11 @@ import _, { round } from "lodash"
 import SVG from "@assets/svg"
 import { useState } from "react"
 import TaskForum from "./task fill forum/TaskForum"
-import { Form, Formik, Field, ErrorMessage } from "formik"
-import * as yup from "yup"
+
 import { v4 as uuid } from "uuid"
 import { darken } from "polished"
 import theme from "@style"
+import ProjectEdit from "./ProjectEdit"
 const color = theme.gantt.color
 const font = theme.gantt.font
 interface projectTemplate {
@@ -21,7 +21,7 @@ interface projectTemplate {
 const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId }) => {
   const [newTask, setNewTask] = useState(false)
   const [editMode, setEditMode] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteMode, setDeleteMode] = useState(false)
   const monthNameShort = monthName.slice(0, 3)
   const plankTask: task = {
     id: uuid(),
@@ -53,21 +53,31 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId 
   }
   return (
     <Holder>
-      <ProjectTitle>
-        <Color data-testid="project-color" style={{ fill: project.color }}>
-          <SVG.Circle />
-        </Color>
-        <Item data-testid="project-title">{project.title}</Item>
-        <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
-        <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
-        <Item data-testid="project-percentage">{round(meanPercentage) + "%"}</Item>
-        <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
-          <SVG.Edit />
-        </Button>
-        <Button data-testid="project-delete-button" onClick={() => handleDelete()}>
-          <SVG.Delete />
-        </Button>
-      </ProjectTitle>
+      {!editMode ? (
+        <ProjectTitle>
+          <Color data-testid="project-color" style={{ fill: project.color }}>
+            <SVG.Circle />
+          </Color>
+          <Item data-testid="project-title">{project.title}</Item>
+          <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
+          <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
+          <Item data-testid="project-percentage">{round(meanPercentage) + "%"}</Item>
+          <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
+            <SVG.Edit />
+          </Button>
+          <Button data-testid="project-delete-button" onClick={() => handleDelete()}>
+            <SVG.Delete />
+          </Button>
+        </ProjectTitle>
+      ) : (
+        <ProjectEdit
+          monthId={monthId}
+          projectId={project.id}
+          projectColor={project.color}
+          projectTitle={project.title}
+          setEditMode={e => setEditMode(e)}
+        />
+      )}
       {project.tasks.map((task: task) => {
         return (
           <TaskCover style={{ fill: project.color }}>
@@ -98,36 +108,6 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId 
           <SVG.AddTask /> Add New Task
         </AddTask>
       )}
-    </Holder>
-  )
-}
-interface projectEdit {
-  title: string
-  color: string
-}
-const ProjectEdit: React.FC<projectEdit> = ({ title, color }) => {
-  const initialValues = { title, color }
-  const validation = yup.object().shape({
-    title: yup.string().required(),
-  })
-  function handleEdit() {}
-  const Holder = styled.div``
-  const FieldContainer = styled.div``
-  const Error = styled.div``
-  return (
-    <Holder data-testid="project-edit-form">
-      <Formik
-        validationSchema={validation}
-        initialValues={initialValues}
-        onSubmit={() => handleEdit()}
-      >
-        <Form>
-          <FieldContainer data-testid="project-edit-title">
-            <Field name="title" type="text" />
-            <ErrorMessage component={Error} name="title" />
-          </FieldContainer>
-        </Form>
-      </Formik>
     </Holder>
   )
 }
@@ -184,7 +164,6 @@ const TaskCover = styled.div`
     opacity: 0.5;
   }
 `
-
 const Item = styled.span`
   width: 5vw;
   white-space: nowrap;

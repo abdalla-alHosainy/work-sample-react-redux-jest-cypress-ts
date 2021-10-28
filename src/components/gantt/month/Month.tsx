@@ -128,12 +128,12 @@ const ProjectLabel = styled.div`
     text-align: center;
     line-height: 3;
     letter-spacing: -0.01vw;
-    margin: 0 0.7vw;
-    color: ${color.gray};
+    margin: 0 0.8vw;
+    color: ${color.blue};
     &:nth-child(1) {
-      width: 7.9vw;
+      width: 8.4vw;
       text-align: start;
-      margin-left: 2.6vw;
+      margin-left: 3.4vw;
     }
   }
 `
