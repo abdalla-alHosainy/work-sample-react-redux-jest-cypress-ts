@@ -12,7 +12,6 @@ interface projects {
 const ProjectsHolder: React.FC<projects> = ({ projects, days, monthName }) => {
   return (
     <Holder>
-      {/* <Background /> */}
       <div className="projects-holder">
         {projects &&
           projects.map((project: project) => {
@@ -31,16 +30,6 @@ const Holder = styled.div`
   .projects-holder {
     z-index: 1;
   }
-`
-const Background = styled.div`
-  z-index: 0;
-  width: 26%;
-  height: 81%;
-  position: fixed;
-  bottom: 2.5vh;
-  border-radius: 0vw 0vw 0vw 0.8vw;
-  left: 5vw;
-  background-color: ${color.offWhite};
 `
 
 export default ProjectsHolder

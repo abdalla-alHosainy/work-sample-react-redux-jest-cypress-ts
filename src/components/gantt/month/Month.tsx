@@ -21,10 +21,11 @@ const Month: React.FC<month> = ({ month }) => {
   return (
     <Holder>
       <Label>
+        <Background />
         <ProjectLabel>
           <span>Title</span>
-          <span>S.Date</span>
-          <span>E.Date</span>
+          <span>Start</span>
+          <span>End</span>
           <span>Perc</span>
         </ProjectLabel>
         <DaysLabel>
@@ -53,7 +54,15 @@ const Label = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-  /* align-items: center;*/
+`
+const Background = styled.div`
+  position: absolute;
+  z-index: 0;
+  width: 27.7%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: ${color.offWhite};
 `
 const Main = styled.div`
   position: relative;
@@ -62,17 +71,13 @@ const Main = styled.div`
   width: 100%;
   height: 70vh;
   overflow-y: scroll;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   &::-webkit-scrollbar {
-    width: 0.7vw;
-  }
-  &::-webkit-scrollbar-track {
-    background: ${color.offWhiteDark};
+    width: 0.6vw;
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${color.gray};
     border-radius: 20px;
-    border: 3px solid ${color.offWhiteDark};
   }
 `
 const DaysLabel = styled.div`
@@ -82,11 +87,11 @@ const DaysLabel = styled.div`
   h2 {
     line-height: 0.2;
     ${font.bold};
-    font-size: 1.5vw;
+    font-size: 1.4vw;
     color: ${color.gray};
   }
   div {
-    width: 67vw;
+    width: 68vw;
     /* background-color: #ff4242; */
     display: flex;
     flex-direction: row;
@@ -95,31 +100,40 @@ const DaysLabel = styled.div`
     ${font.regular};
     color: ${color.gray};
     span {
-      display: block;
-      /* margin: 0 1vw; */
+      position: relative;
+      /* width: 4vw; */
+      &:before {
+        content: "";
+        position: absolute;
+        left: 30%;
+        height: 100vh;
+        top: 90%;
+        width: 1%;
+        background-color: #00000033;
+      }
     }
   }
 `
 const ProjectLabel = styled.div`
+  z-index: 1;
   width: 26vw;
-  /* height: 7vh; */
-  /* background-color: #aeff9a; */
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* justify-content: center; */
+  margin-top: 4vh;
   span {
     ${font.bold};
-    font-size: 1.2vw;
-    width: 7vw;
+    font-size: 0.9vw;
+    width: 2vw;
     text-align: center;
     line-height: 3;
     letter-spacing: -0.01vw;
     margin: 0 0.7vw;
-
+    color: ${color.gray};
     &:nth-child(1) {
-      width: 7vw;
+      width: 7.9vw;
       text-align: start;
+      margin-left: 2.6vw;
     }
   }
 `

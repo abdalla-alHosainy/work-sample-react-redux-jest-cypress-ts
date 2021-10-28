@@ -112,6 +112,13 @@ const SVG = {
       </svg>
     )
   },
+  Circle: () => {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+        <circle id="Ellipse_90" data-name="Ellipse 90" cx="11" cy="11" r="11" />
+      </svg>
+    )
+  },
 }
 
 export default SVG

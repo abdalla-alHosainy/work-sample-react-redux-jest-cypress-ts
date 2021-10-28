@@ -53,11 +53,13 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
   return (
     <Holder>
       <ProjectTitle>
+        <Color data-testid="project-color" style={{ fill: project.color }}>
+          <SVG.Circle />
+        </Color>
         <Item data-testid="project-title">{project.title}</Item>
         <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
         <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
         <Item data-testid="project-percentage">{meanPercentage + "%"}</Item>
-        <Color data-testid="project-color" style={{ backgroundColor: project.color }} />
         <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
           <SVG.Edit />
         </Button>
@@ -66,7 +68,14 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
         </Button>
       </ProjectTitle>
       {project.tasks.map((task: task) => {
-        return <Task task={task} days={days} key={task.id} monthName={monthName} />
+        return (
+          <TaskCover style={{ fill: project.color }}>
+            <div className="circle">
+              <SVG.Circle />
+            </div>
+            <Task task={task} days={days} key={task.id} monthName={monthName} />
+          </TaskCover>
+        )
       })}
       {newTask ? (
         <TaskForum task={plankTask} days={days} editModeState={(e: boolean) => setNewTask(e)} />
@@ -110,14 +119,27 @@ const ProjectEdit: React.FC<projectEdit> = ({ title, color }) => {
 }
 
 const Holder = styled.div`
-  margin: 1vw 0.3vw 1vw 1.1vw;
+  margin: 1vw -0.1vw 1vw 2vw;
+  position: relative;
+  // The Line Behind The Colorful Circles
+  &:before {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    top: 1.2vh;
+    left: 0.6%;
+    background-color: #8c8c8c5c;
+    width: 1px;
+    height: calc(100% - 3.3vw);
+  }
 `
 const ProjectTitle = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 0.9vw;
   ${font.bold};
-  font-size: 1.05vw;
+
   button {
     opacity: 0;
     transition: all 0.3s;
@@ -128,20 +150,35 @@ const ProjectTitle = styled.div`
     }
   }
 `
-const Color = styled.span`
+const Color = styled.div`
   position: relative;
-  left: -1vw;
-  width: 17px;
-  height: 17px;
-  border-radius: 0.2vw;
-
-  /* margin-left: -0.4vw; */
+  left: -0.1vw;
+  margin-right: 0.9vw;
+  svg {
+    fill: inherit;
+    width: 8px;
+  }
 `
+const TaskCover = styled.div`
+  position: relative;
+  .circle svg {
+    position: absolute;
+    top: 33%;
+    display: inline;
+    fill: inherit;
+    width: 5px;
+    opacity: 0.5;
+  }
+`
+
 const Item = styled.span`
   width: 5vw;
   white-space: nowrap;
   &:nth-of-type(1) {
-    width: 12.2vw;
+    width: 14vw;
+  }
+  &:nth-of-type(4) {
+    width: 3vw;
   }
 `
 const Button = styled.button`

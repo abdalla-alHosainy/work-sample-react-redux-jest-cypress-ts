@@ -61,31 +61,41 @@ const Holder = styled.div`
 const TaskContent = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 0.7vw 0.4vw 0.7vw 1vw;
+  align-items: center;
+  justify-content: center;
+  margin: 0.6vw -0.9vw 0.6vw 1.5vw;
   cursor: pointer;
   ${font.regular};
-  font-size: 1.1vw;
+  font-size: 0.95vw;
 `
 const Button = styled.button`
   position: relative;
+  left: -1vw;
   background: none;
   cursor: pointer;
   opacity: 0.4;
   border: none;
   svg {
+    /* display: inline-block; */
     pointer-events: none;
-    width: 1vw;
+    width: 0.8vw;
   }
   &:hover {
     opacity: 1 !important;
   }
 `
 const Number = styled.span`
+  /* word-spacing: nowrap; */
   width: 5vw;
+  /* &:nth-of-type(3) {
+    width: 4vw;
+  } */
 `
 const Title = styled.span`
-  width: 11vw;
+  width: 14vw;
   white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 `
 
 export default Task

@@ -5,8 +5,9 @@ import _ from "lodash"
 import { lighten } from "polished"
 interface component {
   project: project
+  days: number
 }
-const ProjectBars: React.FC<component> = ({ project }) => {
+const ProjectBars: React.FC<component> = ({ project, days }) => {
   let tasksStartDates = []
   let tasksEndDates = []
   let tasksPercentages = []
@@ -19,16 +20,37 @@ const ProjectBars: React.FC<component> = ({ project }) => {
   for (const task of project.tasks) {
     tasksPercentages.push(task.percentage)
   }
-  const minDate = _.min(tasksStartDates)!
-  const maxDate = _.max(tasksEndDates)!
+  const minDate: any = _.min(tasksStartDates)
+  const maxDate: any = _.max(tasksEndDates)
   const meanPercentage = _.mean(tasksPercentages)
+  function width() {
+    const unit = (1 / days) * 100
+    return `${unit * (maxDate - minDate)}%`
+  }
+  console.log(width())
+  const Holder = styled.div`
+    position: relative;
+    margin-bottom: 6.7vh;
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: ${lighten(0.43, project.color)};
+      content: "";
+      width: ${width()};
+      height: 100%;
+      border-radius: 0.9vw;
+    }
+  `
   return (
-    <Holder>
+    <Holder className="project-bars">
       <Bar
         percentage={meanPercentage}
         startDate={minDate}
         endDate={maxDate}
         color={project.color}
+        days={days}
+        title={project.title}
       />
       {project.tasks.map((task: task) => {
         return (
@@ -37,12 +59,13 @@ const ProjectBars: React.FC<component> = ({ project }) => {
             percentage={task.percentage}
             startDate={task.startDate}
             endDate={task.endDate}
-            color={lighten(0.2, project.color)}
+            color={lighten(0.05, project.color)}
+            days={days}
+            title={task.title}
           />
         )
       })}
     </Holder>
   )
 }
-const Holder = styled.div``
 export default ProjectBars
