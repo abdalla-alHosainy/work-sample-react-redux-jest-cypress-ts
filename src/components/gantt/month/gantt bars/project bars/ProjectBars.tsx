@@ -1,7 +1,7 @@
 import { project, task } from "@types"
 import styled from "@emotion/styled"
 import Bar from "./bar/Bar"
-import _ from "lodash"
+import _, { round } from "lodash"
 import { lighten } from "polished"
 interface component {
   project: project
@@ -45,7 +45,7 @@ const ProjectBars: React.FC<component> = ({ project, days }) => {
   return (
     <Holder className="project-bars">
       <Bar
-        percentage={meanPercentage}
+        percentage={round(meanPercentage)}
         startDate={minDate}
         endDate={maxDate}
         color={project.color}

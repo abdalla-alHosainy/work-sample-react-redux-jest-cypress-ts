@@ -5,17 +5,24 @@ import theme from "@style"
 const color = theme.gantt.color
 const font = theme.gantt.font
 interface projects {
-  projects: project[]
-  days: number
-  monthName: string
+  month: any
 }
-const ProjectsHolder: React.FC<projects> = ({ projects, days, monthName }) => {
+const ProjectsHolder: React.FC<projects> = ({ month }) => {
+  const { days, name, projects, id } = month
   return (
     <Holder>
       <div className="projects-holder">
         {projects &&
           projects.map((project: project) => {
-            return <Project project={project} days={days} key={project.id} monthName={monthName} />
+            return (
+              <Project
+                project={project}
+                days={days}
+                key={project.id}
+                monthName={name}
+                monthId={id}
+              />
+            )
           })}
       </div>
     </Holder>

@@ -38,7 +38,7 @@ const Month: React.FC<month> = ({ month }) => {
         </DaysLabel>
       </Label>
       <Main>
-        <ProjectsHolder projects={month.projects} days={month.days} monthName={month.name} />
+        <ProjectsHolder month={month} />
 
         <Days days={month.days} projects={month.projects} />
       </Main>

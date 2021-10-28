@@ -11,8 +11,10 @@ interface taskTemplate {
   task: task
   days: number
   monthName: string
+  monthId: number
+  projectId: string
 }
-const Task: React.FC<taskTemplate> = ({ task, days, monthName }) => {
+const Task: React.FC<taskTemplate> = ({ task, days, monthName, monthId, projectId }) => {
   const [editMode, setEditMode] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const monthNameShort = monthName.slice(0, 3)
@@ -39,7 +41,13 @@ const Task: React.FC<taskTemplate> = ({ task, days, monthName }) => {
         </TaskContent>
       )}
       {editMode && (
-        <TaskForum task={task} days={days} editModeState={(e: boolean) => setEditMode(e)} />
+        <TaskForum
+          task={task}
+          days={days}
+          editModeState={(e: boolean) => setEditMode(e)}
+          editOrNew="edit"
+          idsArray={[monthId, projectId, task.id]}
+        />
       )}
       <Modal isOpen={deleteModal} testId="task-delete-modal" />
     </Holder>

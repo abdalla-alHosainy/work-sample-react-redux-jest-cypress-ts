@@ -1,7 +1,7 @@
 import { project, task } from "@types"
 import styled from "@emotion/styled"
 import Task from "./task/Task"
-import _ from "lodash"
+import _, { round } from "lodash"
 import SVG from "@assets/svg"
 import { useState } from "react"
 import TaskForum from "./task fill forum/TaskForum"
@@ -16,8 +16,9 @@ interface projectTemplate {
   project: project
   days: number
   monthName: string
+  monthId: number
 }
-const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
+const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId }) => {
   const [newTask, setNewTask] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
@@ -59,7 +60,7 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
         <Item data-testid="project-title">{project.title}</Item>
         <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
         <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
-        <Item data-testid="project-percentage">{meanPercentage + "%"}</Item>
+        <Item data-testid="project-percentage">{round(meanPercentage) + "%"}</Item>
         <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
           <SVG.Edit />
         </Button>
@@ -73,12 +74,25 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName }) => {
             <div className="circle">
               <SVG.Circle />
             </div>
-            <Task task={task} days={days} key={task.id} monthName={monthName} />
+            <Task
+              task={task}
+              days={days}
+              key={task.id}
+              monthName={monthName}
+              monthId={monthId}
+              projectId={project.id}
+            />
           </TaskCover>
         )
       })}
       {newTask ? (
-        <TaskForum task={plankTask} days={days} editModeState={(e: boolean) => setNewTask(e)} />
+        <TaskForum
+          task={plankTask}
+          days={days}
+          editModeState={(e: boolean) => setNewTask(e)}
+          editOrNew="new"
+          idsArray={[monthId, project.id, uuid()]}
+        />
       ) : (
         <AddTask data-testid="add-new-task-button" onClick={() => setNewTask(true)}>
           <SVG.AddTask /> Add New Task

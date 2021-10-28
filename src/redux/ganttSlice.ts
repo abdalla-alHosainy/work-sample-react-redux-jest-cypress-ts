@@ -403,9 +403,25 @@ const gantt = createSlice({
     },
   ],
   reducers: {
-    //  setImage: (state, action) => {
-    //    state.image = action.payload
-    //  },
+    editTask: (state, action) => {
+      const { ids, title, startDate, endDate, percentage } = action.payload
+      const task = state[ids[0]].projects[ids[1]].tasks[ids[2]]
+      task.title = title
+      task.startDate = parseInt(startDate)
+      task.endDate = parseInt(endDate)
+      task.percentage = percentage
+    },
+    addTask: (state, action) => {
+      const { ids, title, startDate, endDate, percentage } = action.payload
+      const task = state[ids[0]].projects[ids[1]].tasks
+      task.push({
+        id: ids[2],
+        title,
+        startDate: parseInt(startDate),
+        endDate: parseInt(endDate),
+        percentage,
+      })
+    },
     //  setForumData: (state, action) => {
     //    console.log(action.payload)
     //    state.fullName = action.payload.fullName
@@ -415,4 +431,4 @@ const gantt = createSlice({
   },
 })
 export const ganttReducer = gantt.reducer
-// export const { setImage, setForumData } = gantt.actions
+export const { editTask, addTask } = gantt.actions
