@@ -5,7 +5,6 @@ import _, { round } from "lodash"
 import SVG from "@assets/svg"
 import { useState } from "react"
 import TaskForum from "./task fill forum/TaskForum"
-
 import { v4 as uuid } from "uuid"
 import { darken } from "polished"
 import theme from "@style"
@@ -45,14 +44,14 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId 
   const minDate = _.min(tasksStartDates)
   const maxDate = _.max(tasksEndDates)
   const meanPercentage = _.mean(tasksPercentages)
-  function handleEdit() {
+  function handleEditProject() {
     setEditMode(true)
   }
-  function handleDelete() {
+  function handleDeleteProject() {
     // setDeleteModal(true)
   }
   return (
-    <Holder>
+    <Holder key={project.id}>
       {!editMode ? (
         <ProjectTitle>
           <Color data-testid="project-color" style={{ fill: project.color }}>
@@ -62,10 +61,10 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId 
           <Item data-testid="project-start-date">{minDate + " " + monthNameShort}</Item>
           <Item data-testid="project-end-date">{maxDate + " " + monthNameShort}</Item>
           <Item data-testid="project-percentage">{round(meanPercentage) + "%"}</Item>
-          <Button data-testid="project-edit-button" onClick={() => handleEdit()}>
+          <Button data-testid="project-edit-button" onClick={() => handleEditProject()}>
             <SVG.Edit />
           </Button>
-          <Button data-testid="project-delete-button" onClick={() => handleDelete()}>
+          <Button data-testid="project-delete-button" onClick={() => handleDeleteProject()}>
             <SVG.Delete />
           </Button>
         </ProjectTitle>
@@ -80,14 +79,14 @@ const Project: React.FC<projectTemplate> = ({ project, days, monthName, monthId 
       )}
       {project.tasks.map((task: task) => {
         return (
-          <TaskCover style={{ fill: project.color }}>
+          <TaskCover style={{ fill: project.color }} key={task.id}>
             <div className="circle">
               <SVG.Circle />
             </div>
             <Task
+              canDelete={project.tasks.length > 1}
               task={task}
               days={days}
-              key={task.id}
               monthName={monthName}
               monthId={monthId}
               projectId={project.id}

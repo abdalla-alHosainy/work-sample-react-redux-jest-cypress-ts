@@ -39,6 +39,7 @@ const ProjectNew: React.FC<component> = ({ month, setNewProjectState }) => {
 
   useEffect(() => {
     titleRef.current.focus()
+    document.addEventListener("keyup", e => e.key === "Escape" && setNewProjectState(false), false)
   }, [])
   const dispatch = useDispatch()
   function handelSubmit(data: object) {

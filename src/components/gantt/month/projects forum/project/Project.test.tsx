@@ -33,7 +33,9 @@ const projectData: project = {
 }
 
 describe("<Project/> Render Elements According To Props", () => {
-  beforeEach(() => setup(<Project project={projectData} days={30} monthName="January" />))
+  beforeEach(() =>
+    setup(<Project project={projectData} days={30} monthName="January" monthId={0} />)
+  )
   it("should Render Project Title", () => {
     const title = screen.getByTestId("project-title")
     expect(title.textContent).toBe(projectData.title)
@@ -65,10 +67,7 @@ describe("<Project/> Render Elements According To Props", () => {
     const meanPercentage = _.mean(tasksPercentages)
     expect(percentage.textContent).toContain(`${meanPercentage}`)
   })
-  it("should Render Project Color", () => {
-    const color = screen.getByTestId("project-color")
-    expect(color).toHaveStyle(`background-color:${projectData.color}`)
-  })
+
   it("should Render Project 'Edit' Button", () => {
     const editButton = screen.getByTestId("project-edit-button")
     expect(editButton).toBeInTheDocument()
@@ -88,7 +87,7 @@ describe("<Project/> Render Elements According To Props", () => {
 })
 describe("<Project/> on Add New Task", () => {
   it("should Show Task Form", async () => {
-    setup(<Project project={projectData} days={30} monthName="January" />)
+    setup(<Project project={projectData} days={30} monthName="January" monthId={0} />)
     const addNewTaskButton = screen.getByTestId("add-new-task-button")
     await act(async () => {
       fireEvent.click(addNewTaskButton)
@@ -97,23 +96,10 @@ describe("<Project/> on Add New Task", () => {
     expect(taskForm).toBeInTheDocument()
   })
 })
-// describe("<Project/> on Edit", () => {
-//   it("should Show Edit Project Form", async () => {
-//     setup(<Project project={projectData} days={30} monthName="January" />)
-//     const editButton = screen.getByTestId("project-edit-button")
-//     await act(async () => {
-//       fireEvent.click(editButton)
-//     })
-//     const projectForm = await screen.getByTestId("project-edit-form")
-//     expect(projectForm).toBeInTheDocument()
-//   })
-// })
+describe("<Project/> on Edit", () => {
+  it("should Show Edit Project Form", async () => {})
+})
 
-// // describe("<Project/> on Delete", () => {
-// //    it("should Show Delete Project Modal", async () => {
-// //      const deleteButton = screen.getByTestId("project-delete-button")
-// //      await act(async () => {
-// //        fireEvent.click(deleteButton)
-// //      })
-// //    })
-// // })
+describe("<Project/> on Delete", () => {
+  it("should Show Delete Project Modal", async () => {})
+})

@@ -409,7 +409,9 @@ const gantt = createSlice({
   reducers: {
     editTask: (state, action) => {
       const { ids, title, startDate, endDate, percentage } = action.payload
-      const task = state[ids[0]].projects[ids[1]].tasks[ids[2]]
+      const projects = state[ids[0]].projects
+      const tasks = _.find(projects, i => i.id === ids[1]).tasks
+      const task = _.find(tasks, i => i.id === ids[2])
       task.title = title
       task.startDate = parseInt(startDate)
       task.endDate = parseInt(endDate)
@@ -417,7 +419,8 @@ const gantt = createSlice({
     },
     addTask: (state, action) => {
       const { ids, title, startDate, endDate, percentage } = action.payload
-      const tasks = state[ids[0]].projects[ids[1]].tasks
+      const projects = state[ids[0]].projects
+      const tasks = _.find(projects, i => i.id === ids[1]).tasks
       tasks.push({
         id: ids[2],
         title,
@@ -428,7 +431,8 @@ const gantt = createSlice({
     },
     deleteTask: (state, action) => {
       const { ids } = action.payload
-      const tasks = state[ids[0]].projects[ids[1]].tasks
+      const projects = state[ids[0]].projects
+      const tasks = _.find(projects, i => i.id === ids[1]).tasks
       _.remove(tasks, { id: ids[2] })
     },
     addProject: (state, action) => {
@@ -459,8 +463,9 @@ const gantt = createSlice({
     },
     editProject: (state, action) => {
       const { ids, projectTitle, projectColor } = action.payload
-      const project = state[ids[0]].projects[ids[1]]
-      project.color = colorTheme[projectColor]
+      const projects = state[ids[0]].projects
+      const project = _.find(projects, i => i.id === ids[1])
+      project.color = projectColor
       project.title = projectTitle
     },
   },

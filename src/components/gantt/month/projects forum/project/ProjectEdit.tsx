@@ -40,6 +40,7 @@ const ProjectEdit: React.FC<component> = ({
   ]
   useEffect(() => {
     titleRef.current.focus()
+    document.addEventListener("keyup", e => e.key === "Escape" && setEditMode(false), false)
   }, [])
   const dispatch = useDispatch()
 

@@ -2,7 +2,7 @@ import { task } from "@types"
 import styled from "@emotion/styled"
 import SVG from "@assets/svg"
 import TaskForum from "../task fill forum/TaskForum"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { deleteTask } from "@redux_local/ganttSlice"
 import theme from "@style"
@@ -15,12 +15,23 @@ interface taskTemplate {
   monthName: string
   monthId: number
   projectId: string
+  canDelete: boolean
 }
-const Task: React.FC<taskTemplate> = ({ task, days, monthName, monthId, projectId }) => {
+const Task: React.FC<taskTemplate> = ({
+  task,
+  days,
+  monthName,
+  monthId,
+  projectId,
+  canDelete = false,
+}) => {
   const [editMode, setEditMode] = useState(false)
   const [deleteMode, setDeleteMode] = useState(false)
   const dispatch = useDispatch()
   const monthNameShort = monthName.slice(0, 3)
+  useEffect(() => {
+    document.addEventListener("keyup", e => e.key === "Escape" && setDeleteMode(false), false)
+  }, [])
   function handleEdit() {
     setEditMode(true)
   }
@@ -42,6 +53,7 @@ const Task: React.FC<taskTemplate> = ({ task, days, monthName, monthId, projectI
             className="edit"
             data-testid="task-delete-button"
             onClick={() => setDeleteMode(true)}
+            disabled={!canDelete}
           >
             <SVG.Delete />
           </Button>

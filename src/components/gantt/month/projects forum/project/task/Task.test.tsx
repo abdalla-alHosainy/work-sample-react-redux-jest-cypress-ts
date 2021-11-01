@@ -12,7 +12,9 @@ const taskData: task = {
 }
 
 describe("<Task/> Render Elements", () => {
-  beforeEach(() => setup(<Task task={taskData} days={30} monthName="January" />))
+  beforeEach(() =>
+    setup(<Task task={taskData} days={30} monthName="January" monthId={0} projectId="0" />)
+  )
   it("should Render task Title", () => {
     const title = screen.getByTestId("task-title")
     expect(title).toHaveTextContent(taskData.title)
@@ -37,7 +39,7 @@ describe("<Task/> Render Elements", () => {
 
 describe("<Task/> on Edit Click", () => {
   it("should Render The Edit Forum", () => {
-    setup(<Task task={taskData} days={30} monthName="January" />)
+    setup(<Task task={taskData} days={30} monthName="January" monthId={0} projectId="0" />)
     const editButton = screen.getByTestId("task-edit-button")
     userEvent.click(editButton)
     const forum = screen.getByTestId("task-forum")
@@ -45,18 +47,13 @@ describe("<Task/> on Edit Click", () => {
   })
 })
 
-// describe("<Task/> on Delete Click", () => {
-//   beforeEach(() => {
-//     setup(<Task task={taskData} days={30} />)
-//   })
-//   it("should Render the Check Modal", () => {
-//     // const deleteButton = screen.getByTestId("task-delete-button")
-//     // userEvent.click(deleteButton)
-//     // const deleteModal = screen.getByTestId("task-delete-modal")
-//     // expect(deleteModal).toBeInTheDocument()
-//   })
-//   it("should Hide Check modal if Press 'ESC'", () => {})
-//   it("should Hide Check modal if Click Cancel", () => {})
-//   it("should Delete task & Hide Check modal if Press 'ENTER'", () => {})
-//   it("should Delete task & Hide Check modal if Clock YES", () => {})
-// })
+describe("<Task/> on Delete Click", () => {
+  beforeEach(() => {
+    setup(<Task task={taskData} days={30} monthName="January" monthId={0} projectId="0" />)
+  })
+  it("should Render the Check Modal", () => {})
+  it("should Hide Check modal if Press 'ESC'", () => {})
+  it("should Hide Check modal if Click Cancel", () => {})
+  it("should Delete task & Hide Check modal if Press 'ENTER'", () => {})
+  it("should Delete task & Hide Check modal if Clock YES", () => {})
+})

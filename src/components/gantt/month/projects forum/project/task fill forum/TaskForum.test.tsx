@@ -13,7 +13,15 @@ const taskData: task = {
 describe("<TaskForum/> Render Elements with Right Values", () => {
   beforeEach(() => {
     const changeState = jest.fn()
-    setup(<TaskForum task={taskData} days={30} editModeState={(e: boolean) => changeState(e)} />)
+    setup(
+      <TaskForum
+        task={taskData}
+        days={30}
+        editModeState={(e: boolean) => changeState(e)}
+        editOrNew="edit"
+        idsArray={[0, "0", "1"]}
+      />
+    )
   })
   it("should Render Title Input with Right Values", () => {
     const titleInput = screen.getByTestId("task-form-title").querySelector("input")

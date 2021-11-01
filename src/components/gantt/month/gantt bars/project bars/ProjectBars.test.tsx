@@ -32,7 +32,7 @@ const projectTestData: project = {
 }
 describe("<ProjectBars/> Render Bars ", () => {
   it("should Render Bars with the right Count", () => {
-    setup(<ProjectBars project={projectTestData} />)
+    setup(<ProjectBars project={projectTestData} days={30} />)
     const bars = screen.getAllByTestId("bar")
     expect(bars.length).toBe(projectTestData.tasks.length + 1)
   })
