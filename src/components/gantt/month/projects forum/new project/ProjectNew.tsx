@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { Formik, Form, Field, FieldProps } from "formik"
+import { Formik, Form, Field, FieldProps, useFormik } from "formik"
 import { month } from "@types"
 import { useEffect, useRef } from "react"
 import { darken } from "polished"
@@ -10,35 +10,13 @@ import * as yup from "yup"
 const color = theme.gantt.color
 const font = theme.gantt.font
 
-const initialValues = {
-  projectTitle: "",
-  projectColor: "cyan",
-  taskTitle: "",
-  taskStartDate: "1",
-  taskEndDate: "2",
-  taskPercentage: 0,
-}
-const validation = yup.object().shape({
-  projectTitle: yup.string().required(),
-  taskTitle: yup.string().required(),
-  taskStartDate: yup.number().lessThan(yup.ref("taskEndDate")),
-  taskEndDate: yup.number().moreThan(yup.ref("taskStartDate")),
-  taskPercentage: yup.number().required("Required!").max(100).min(0),
-})
-const colorOptions = ["cyan", "green", "blue", "purple", "red", "orange", "black", "yellow", "pink"]
-
 interface component {
   month: month
   visible: Function
 }
 const ProjectNew: React.FC<component> = ({ month, visible }) => {
-  let Days: any[] = []
-  for (let i = 0; i < month.days; i++) {
-    Days.push(<option key={i}>{i + 1}</option>)
-  }
   const titleRef = useRef(null)
   const form = useRef(null)
-
   useEffect(() => {
     titleRef.current.focus()
     function clickAway(e) {
@@ -58,129 +36,136 @@ const ProjectNew: React.FC<component> = ({ month, visible }) => {
       document.removeEventListener("mouseup", clickAway)
     }
   }, [])
-  const dispatch = useDispatch()
-  function handelSubmit(data: object) {
-    dispatch(addProject({ id: [month.id], ...data }))
-    visible(false)
-  }
-  return (
-    <Holder data-testid="new-project-form" ref={form}>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validation}
-        onSubmit={(data: object) => handelSubmit(data)}
-      >
-        {formik => (
-          <Form>
-            <Row>
-              <FiledHolder data-testid="new-project-title">
-                <label htmlFor="projectTitle">Project Title</label>
-                <Field type="text" name="projectTitle">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <input
-                        ref={titleRef}
-                        type="text"
-                        {...field}
-                        placeholder="Project Title"
-                        className={`${meta.touched && meta.error ? "error" : ""}`}
-                      />
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="new-project-color">
-                <label htmlFor="projectColor">Project Color</label>
 
-                <Field type="text" name="projectColor">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <select
-                        {...field}
-                        className={`${meta.touched && meta.error ? "error" : ""} color`}
-                        style={{ backgroundColor: color[field.value] }}
-                      >
-                        {colorOptions.map(colorItem => (
-                          <option
-                            key={colorItem}
-                            value={colorItem}
-                            style={{ backgroundColor: color[colorItem] }}
-                          >
-                            {colorItem}
-                          </option>
-                        ))}
-                      </select>
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-            </Row>
-            <Row>
-              <FiledHolder data-testid="new-project-task-title">
-                <label htmlFor="taskTitle">Task Title</label>
-                <Field type="text" name="taskTitle">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <input
-                        type="text"
-                        {...field}
-                        placeholder="Task Title"
-                        className={`${meta.touched && meta.error ? "error" : ""}`}
-                      />
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="new-project-task-start-date">
-                <label htmlFor="taskStartDate">Start</label>
-                <Field as="select" name="taskStartDate">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                        {Days}
-                      </select>
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="new-project-task-end-date">
-                <label htmlFor="taskEndDate">End </label>
-                <Field as="select" name="taskEndDate">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                        {Days}
-                      </select>
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="new-project-task-percentage">
-                <label htmlFor="taskPercentage">Perc</label>
-                <Field name="taskPercentage" type="number" max="100" min="0">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <input
-                        type="number"
-                        {...field}
-                        className={`${meta.touched && meta.error ? "error" : ""}`}
-                      />
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-            </Row>
-            <Row>
-              <Button data-testid="new-project-add-button" disabled={!formik.isValid}>
-                Add
-              </Button>
-              <Button data-testid="new-project-cancel-button" onClick={() => visible(false)}>
-                Cancel
-              </Button>
-            </Row>
-          </Form>
-        )}
-      </Formik>
+  const daysOptions = () => {
+    let Days: any[] = []
+    for (let i = 0; i < month.days; i++) {
+      Days.push(<option key={i}>{i + 1}</option>)
+    }
+    return Days
+  }
+  const colorOptions = () => {
+    const colors = ["cyan", "green", "blue", "purple", "red", "orange", "black", "yellow", "pink"]
+    return colors.map(colorItem => (
+      <option key={colorItem} value={colorItem} style={{ backgroundColor: color[colorItem] }}>
+        {colorItem}
+      </option>
+    ))
+  }
+
+  const dispatch = useDispatch()
+  const { handleBlur, handleChange, handleSubmit, isValid, touched, errors, values } = useFormik({
+    initialValues: {
+      projectTitle: "",
+      projectColor: "cyan",
+      taskTitle: "",
+      taskStartDate: "1",
+      taskEndDate: "2",
+      taskPercentage: 0,
+    },
+    validationSchema: yup.object().shape({
+      projectTitle: yup.string().required(),
+      taskTitle: yup.string().required(),
+      taskStartDate: yup.number().lessThan(yup.ref("taskEndDate")),
+      taskEndDate: yup.number().moreThan(yup.ref("taskStartDate")),
+      taskPercentage: yup.number().required("Required!").max(100).min(0),
+    }),
+    onSubmit: values => {
+      dispatch(addProject({ id: [month.id], ...values }))
+      visible(false)
+    },
+  })
+
+  return (
+    <Holder data-testid="new-project-form">
+      <form onSubmit={handleSubmit} ref={form}>
+        <Row>
+          <FiledHolder data-testid="new-project-title">
+            <label htmlFor="projectTitle">Project Title</label>
+            <input
+              ref={titleRef}
+              type="text"
+              name="projectTitle"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.projectTitle}
+              placeholder="Project Title"
+              className={`${touched.projectTitle && errors.projectTitle ? "error" : ""}`}
+            />
+          </FiledHolder>
+          <FiledHolder data-testid="new-project-color">
+            <label htmlFor="projectColor">Project Color</label>
+            <select
+              name="projectColor"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.projectColor}
+              style={{ backgroundColor: color[values.projectColor], color: "#fff" }}
+            >
+              {colorOptions()}
+            </select>
+          </FiledHolder>
+        </Row>
+        <Row>
+          <FiledHolder data-testid="new-project-task-title">
+            <label htmlFor="taskTitle">Task Title</label>
+            <input
+              type="text"
+              name="taskTitle"
+              placeholder="Task Title"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.taskTitle}
+              className={`${touched.taskTitle && errors.taskTitle ? "error" : ""}`}
+            />
+          </FiledHolder>
+          <FiledHolder data-testid="new-project-task-start-date">
+            <label htmlFor="taskStartDate">Start</label>
+            <select
+              name="taskStartDate"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.taskStartDate}
+              className={`${touched.taskStartDate && errors.taskStartDate ? "error" : ""}`}
+            >
+              {daysOptions()}
+            </select>
+          </FiledHolder>
+          <FiledHolder data-testid="new-project-task-end-date">
+            <label htmlFor="taskEndDate">End </label>
+            <select
+              name="taskEndDate"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.taskEndDate}
+              className={`${touched.taskEndDate && errors.taskEndDate ? "error" : ""}`}
+            >
+              {daysOptions()}
+            </select>
+          </FiledHolder>
+          <FiledHolder data-testid="new-project-task-percentage">
+            <label htmlFor="taskPercentage">Perc</label>
+            <input
+              name="taskPercentage"
+              type="number"
+              max="100"
+              min="0"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.taskPercentage}
+              className={`${touched.taskPercentage && errors.taskPercentage ? "error" : ""}`}
+            />
+          </FiledHolder>
+        </Row>
+        <Row>
+          <Button type="submit" data-testid="new-project-submit-button" disabled={!isValid}>
+            Add
+          </Button>
+          <Button data-testid="new-project-cancel-button" onClick={() => visible(false)}>
+            Cancel
+          </Button>
+        </Row>
+      </form>
     </Holder>
   )
 }

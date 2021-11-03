@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import { month } from "@types"
-import { Formik, Form, Field, FieldProps, ErrorMessage, FormikProps } from "formik"
+import { useFormik } from "formik"
 import * as yup from "yup"
 import { useDispatch } from "react-redux"
 import { editTask, addTask } from "@redux_local/ganttSlice"
@@ -12,134 +12,112 @@ const color = theme.gantt.color
 const font = theme.gantt.font
 
 interface component {
-  // task: task
-  // days: number
   visible: Function
   editOrNew: "edit" | "new"
   ids: [number, string, string]
   month: month
 }
 const TaskForum: React.FC<component> = ({ month, visible, ids, editOrNew }) => {
-  const dispatch = useDispatch()
-  const titleRef = useRef(null)
-  const task = _.find(_.find(month.projects, p => p.id === ids[1]).tasks, t => t.id === ids[2])
   useEffect(() => {
     titleRef.current.focus()
-    document.addEventListener("keyup", e => e.key === "Escape" && handelCancel(), false)
   }, [])
-  let Days: any[] = []
-  for (let i = 0; i < month.days; i++) {
-    Days.push(<option key={i}>{i + 1}</option>)
+
+  const titleRef = useRef(null)
+  const task = _.find(_.find(month.projects, { id: ids[1] }).tasks, { id: ids[2] })
+
+  const daysOptions = () => {
+    let Days: any[] = []
+    for (let i = 0; i < month.days; i++) {
+      Days.push(<option key={i}>{i + 1}</option>)
+    }
+    return Days
   }
+  const dispatch = useDispatch()
   const isEdit = editOrNew === "edit"
-  const initialValues = {
-    title: isEdit ? task.title : "",
-    startDate: isEdit ? task.startDate : "1",
-    endDate: isEdit ? task.endDate : "2",
-    percentage: isEdit ? task.percentage : 0,
-  }
-  const validation = yup.object().shape({
-    title: yup.string().required("Required!"),
-    startDate: yup.number().lessThan(yup.ref("endDate")),
-    endDate: yup.number().moreThan(yup.ref("startDate")),
-    percentage: yup.number().required("Required!").max(100).min(0),
+  const { isValid, handleSubmit, handleBlur, handleChange, values, errors, touched } = useFormik({
+    initialValues: {
+      title: isEdit ? task.title : "",
+      startDate: isEdit ? task.startDate : "1",
+      endDate: isEdit ? task.endDate : "2",
+      percentage: isEdit ? task.percentage : 0,
+    },
+    validationSchema: yup.object().shape({
+      title: yup.string().required("Required!"),
+      startDate: yup.number().lessThan(yup.ref("endDate")),
+      endDate: yup.number().moreThan(yup.ref("startDate")),
+      percentage: yup.number().required("Required!").max(100).min(0),
+    }),
+    onSubmit: value => {
+      if (editOrNew === "edit") {
+        dispatch(
+          editTask({
+            ids,
+            ...value,
+          })
+        )
+      }
+      if (editOrNew === "new") {
+        dispatch(
+          addTask({
+            ids,
+            ...value,
+          })
+        )
+      }
+      visible(false)
+    },
   })
-  function handelSubmit(data: any) {
-    console.log(`editOrNew/// ${editOrNew}`)
-    if (editOrNew === "edit") {
-      dispatch(
-        editTask({
-          ids,
-          ...data,
-        })
-      )
-      console.log(`Done/// ${editOrNew}`)
-    }
-    if (editOrNew === "new") {
-      dispatch(
-        addTask({
-          ids,
-          ...data,
-        })
-      )
-      console.log(`Done/// ${editOrNew}`)
-    }
-    handelCancel()
-  }
-  function handelCancel() {
-    visible(false)
-  }
   return (
     <Holder data-testid="task-forum">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validation}
-        onSubmit={(value: any) => handelSubmit(value)}
-      >
-        {formik => {
-          // console.log(formik)
-          return (
-            <Form>
-              <FiledHolder data-testid="task-form-title">
-                <Field type="text" name="title">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <input
-                        placeholder="Task Title"
-                        ref={titleRef}
-                        type="text"
-                        {...field}
-                        className={`${meta.touched && meta.error ? "error" : ""}`}
-                      />
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="task-form-start-date">
-                <Field as="select" name="startDate">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                        {Days}
-                      </select>
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="task-form-end-date">
-                <Field as="select" name="endDate">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                        {Days}
-                      </select>
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <FiledHolder data-testid="task-form-percentage">
-                <Field name="percentage" type="number" max="100" min="0">
-                  {({ field, meta }: FieldProps) => {
-                    return (
-                      <input
-                        type="number"
-                        {...field}
-                        className={`${meta.touched && meta.error ? "error" : ""}`}
-                      />
-                    )
-                  }}
-                </Field>
-              </FiledHolder>
-              <button data-testid="task-forum-save-button" type="submit" disabled={!formik.isValid}>
-                <SVG.Check />
-              </button>
-              <button data-testid="task-forum-cancel-button" onClick={() => handelCancel()}>
-                <SVG.Cross />
-              </button>
-            </Form>
-          )
-        }}
-      </Formik>
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="Task Title"
+          ref={titleRef}
+          name="title"
+          type="text"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.title}
+          className={`${touched.title && errors.title ? "error" : ""}`}
+        />
+        <select
+          data-testid="task-form-start-date"
+          name="startDate"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.startDate}
+          className={`${touched.startDate && errors.startDate ? "error" : ""}`}
+        >
+          {daysOptions()}
+        </select>
+        <select
+          name="endDate"
+          data-testid="task-form-end-date"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.endDate}
+          className={`${touched.endDate && errors.endDate ? "error" : ""}`}
+        >
+          {daysOptions()}
+        </select>
+        <input
+          type="number"
+          max="100"
+          min="0"
+          name="percentage"
+          data-testid="task-form-percentage"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.percentage}
+          className={`${touched.percentage && errors.percentage ? "error" : ""}`}
+        />
+        <button data-testid="task-forum-save-button" type="submit" disabled={!isValid}>
+          <SVG.Check />
+        </button>
+        <button data-testid="task-forum-cancel-button" onClick={() => visible(false)}>
+          <SVG.Cross />
+        </button>
+      </form>
     </Holder>
   )
 }
@@ -217,6 +195,5 @@ const Holder = styled.div`
     color: ${color.red};
   }
 `
-const FiledHolder = styled.div``
 
 export default TaskForum
