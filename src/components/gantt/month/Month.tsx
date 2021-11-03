@@ -40,7 +40,7 @@ const Month: React.FC<month> = ({ month }) => {
       <Main>
         <ProjectsHolder month={month} />
 
-        <Days days={month.days} projects={month.projects} />
+        <Days month={month} />
       </Main>
     </Holder>
   )
@@ -96,16 +96,17 @@ const DaysLabel = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
-    ${font.regular};
+    /* justify-content: space-around; */
     color: ${color.gray};
+    ${font.regular};
     span {
       position: relative;
-      /* width: 4vw; */
+      width: 2.2vw;
+      text-align: center;
       &:before {
         content: "";
         position: absolute;
-        left: 30%;
+        left: 45%;
         height: 100vh;
         top: 90%;
         width: 1%;

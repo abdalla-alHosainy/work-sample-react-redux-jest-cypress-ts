@@ -1,4 +1,4 @@
-import { project } from "@types"
+import { project, month } from "@types"
 import Project from "./project/Project"
 import styled from "@emotion/styled"
 import { useState } from "react"
@@ -9,25 +9,18 @@ import theme from "@style"
 const color = theme.gantt.color
 const font = theme.gantt.font
 interface projects {
-  month: any
+  month: month
 }
 const ProjectsHolder: React.FC<projects> = ({ month }) => {
   const [newProject, setNewProject] = useState(false)
-  const { days, name, projects, id } = month
+
+  const { projects } = month
   return (
     <Holder>
       <div className="projects-holder">
         {projects &&
           projects.map((project: project) => {
-            return (
-              <Project
-                project={project}
-                days={days}
-                key={project.id}
-                monthName={name}
-                monthId={id}
-              />
-            )
+            return <Project ids={[month.id, project.id]} month={month} key={project.id} />
           })}
       </div>
       <div className="add-project">
@@ -36,7 +29,7 @@ const ProjectsHolder: React.FC<projects> = ({ month }) => {
             <SVG.AddTask /> Add New Project
           </AddProject>
         ) : (
-          <ProjectNew month={month} setNewProjectState={(state: boolean) => setNewProject(state)} />
+          <ProjectNew month={month} visible={(state: boolean) => setNewProject(state)} />
         )}
       </div>
     </Holder>

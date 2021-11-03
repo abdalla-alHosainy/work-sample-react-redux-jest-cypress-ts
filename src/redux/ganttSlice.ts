@@ -14,7 +14,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          willDelete: false,
+          color: "cyan",
           tasks: [
             {
               id: "0",
@@ -22,6 +23,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 3,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "1",
@@ -29,6 +31,7 @@ const gantt = createSlice({
               startDate: 3,
               endDate: 7,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "2",
@@ -36,6 +39,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "3",
@@ -43,6 +47,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "4",
@@ -50,6 +55,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "5",
@@ -57,6 +63,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "6",
@@ -64,6 +71,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "7",
@@ -71,13 +79,15 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
         {
           id: "1",
           title: "second project",
-          color: "#FF0000",
+          color: "red",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -85,13 +95,15 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 3,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
         {
           id: "2",
           title: "third project",
-          color: "#FF0000",
+          color: "red",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -99,6 +111,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 3,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "1",
@@ -106,6 +119,7 @@ const gantt = createSlice({
               startDate: 3,
               endDate: 7,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "2",
@@ -113,13 +127,15 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
         {
           id: "3",
           title: "fourth project",
-          color: "#FF0000",
+          color: "red",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -127,6 +143,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 3,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "1",
@@ -134,6 +151,7 @@ const gantt = createSlice({
               startDate: 3,
               endDate: 7,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "2",
@@ -141,6 +159,7 @@ const gantt = createSlice({
               startDate: 8,
               endDate: 15,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -154,7 +173,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -162,6 +182,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -175,7 +196,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -183,6 +205,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -196,7 +219,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -204,6 +228,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -217,7 +242,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -225,6 +251,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -238,7 +265,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -246,6 +274,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -259,7 +288,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -267,6 +297,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -280,7 +311,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -288,6 +320,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -301,7 +334,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -309,6 +343,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -322,7 +357,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -330,6 +366,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "1",
@@ -337,13 +374,15 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 20,
               percentage: 40,
+              willDelete: false,
             },
           ],
         },
         {
           id: "1",
           title: "Second project",
-          color: "#FF0000",
+          color: "red",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -351,6 +390,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
             {
               id: "1",
@@ -358,6 +398,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 20,
               percentage: 40,
+              willDelete: false,
             },
           ],
         },
@@ -371,7 +412,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -379,6 +421,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -392,7 +435,8 @@ const gantt = createSlice({
         {
           id: "0",
           title: "first project",
-          color: "#0088FF",
+          color: "cyan",
+          willDelete: false,
           tasks: [
             {
               id: "0",
@@ -400,6 +444,7 @@ const gantt = createSlice({
               startDate: 1,
               endDate: 10,
               percentage: 30,
+              willDelete: false,
             },
           ],
         },
@@ -410,8 +455,8 @@ const gantt = createSlice({
     editTask: (state, action) => {
       const { ids, title, startDate, endDate, percentage } = action.payload
       const projects = state[ids[0]].projects
-      const tasks = _.find(projects, i => i.id === ids[1]).tasks
-      const task = _.find(tasks, i => i.id === ids[2])
+      const tasks = _.find(projects, { id: ids[1] }).tasks
+      const task = _.find(tasks, { id: ids[2] })
       task.title = title
       task.startDate = parseInt(startDate)
       task.endDate = parseInt(endDate)
@@ -420,19 +465,25 @@ const gantt = createSlice({
     addTask: (state, action) => {
       const { ids, title, startDate, endDate, percentage } = action.payload
       const projects = state[ids[0]].projects
-      const tasks = _.find(projects, i => i.id === ids[1]).tasks
+      const tasks = _.find(projects, { id: ids[1] }).tasks
       tasks.push({
         id: ids[2],
         title,
         startDate: parseInt(startDate),
         endDate: parseInt(endDate),
         percentage,
+        willDelete: false,
       })
+    },
+    willDeleteTask: (state, action) => {
+      const { ids, willDeleteTask } = action.payload
+      const task = _.find(_.find(state[ids[0]].projects, { id: ids[1] }).tasks, { id: ids[2] })
+      task.willDelete = willDeleteTask
     },
     deleteTask: (state, action) => {
       const { ids } = action.payload
       const projects = state[ids[0]].projects
-      const tasks = _.find(projects, i => i.id === ids[1]).tasks
+      const tasks = _.find(projects, { id: ids[1] }).tasks
       _.remove(tasks, { id: ids[2] })
     },
     addProject: (state, action) => {
@@ -448,8 +499,9 @@ const gantt = createSlice({
       const projects = state[id].projects
       projects.push({
         id: uuid(),
-        color: colorTheme[projectColor],
+        color: projectColor,
         title: projectTitle,
+        willDelete: false,
         tasks: [
           {
             id: uuid(),
@@ -457,6 +509,7 @@ const gantt = createSlice({
             startDate: taskStartDate,
             endDate: taskEndDate,
             percentage: taskPercentage,
+            willDelete: false,
           },
         ],
       })
@@ -464,11 +517,29 @@ const gantt = createSlice({
     editProject: (state, action) => {
       const { ids, projectTitle, projectColor } = action.payload
       const projects = state[ids[0]].projects
-      const project = _.find(projects, i => i.id === ids[1])
+      const project = _.find(projects, { id: ids[1] })
       project.color = projectColor
       project.title = projectTitle
+    },
+    willDeleteProject: (state, action) => {
+      const { ids, willDeleteProject } = action.payload
+      const project = _.find(state[ids[0]].projects, { id: ids[1] })
+      project.willDelete = willDeleteProject
+    },
+    deleteProject: (state, action) => {
+      const { ids } = action.payload
+      _.remove(state[ids[0]].projects, { id: ids[1] })
     },
   },
 })
 export const ganttReducer = gantt.reducer
-export const { editTask, addTask, deleteTask, addProject, editProject } = gantt.actions
+export const {
+  editTask,
+  addTask,
+  deleteTask,
+  addProject,
+  editProject,
+  willDeleteProject,
+  willDeleteTask,
+  deleteProject,
+} = gantt.actions

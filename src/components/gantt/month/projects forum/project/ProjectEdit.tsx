@@ -1,28 +1,23 @@
 import styled from "@emotion/styled"
+import { month } from "@types"
 import { Form, Formik, Field, FieldProps } from "formik"
 import * as yup from "yup"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 import { editProject } from "@redux_local/ganttSlice"
+import _ from "lodash"
 import SVG from "@assets/svg"
 import theme from "@style"
 const color = theme.gantt.color
 const font = theme.gantt.font
 interface component {
-  projectTitle: string
-  projectColor: string
-  projectId: string
-  monthId: number
-  setEditMode: Function
+  month: month
+  ids: [number, string]
+  visible: Function
 }
-const ProjectEdit: React.FC<component> = ({
-  projectTitle,
-  projectColor,
-  monthId,
-  projectId,
-  setEditMode,
-}) => {
-  const initialValues = { projectTitle, projectColor }
+const ProjectEdit: React.FC<component> = ({ ids, month, visible }) => {
+  const project = _.find(month.projects, p => p.id === ids[1])
+  const initialValues = { projectTitle: project.title, projectColor: project.color }
   const validation = yup.object().shape({
     projectTitle: yup.string().required(),
   })
@@ -40,13 +35,13 @@ const ProjectEdit: React.FC<component> = ({
   ]
   useEffect(() => {
     titleRef.current.focus()
-    document.addEventListener("keyup", e => e.key === "Escape" && setEditMode(false), false)
+    document.addEventListener("keyup", e => e.key === "Escape" && visible(false), false)
   }, [])
   const dispatch = useDispatch()
 
   function handleEdit(data: object) {
-    dispatch(editProject({ ids: [monthId, projectId], ...data }))
-    setEditMode(false)
+    dispatch(editProject({ ids: [month.id, project.id], ...data }))
+    visible(false)
   }
   return (
     <Holder data-testid="project-edit-form">
@@ -55,52 +50,54 @@ const ProjectEdit: React.FC<component> = ({
         validationSchema={validation}
         onSubmit={(data: object) => handleEdit(data)}
       >
-        <Form>
-          <FiledHolder data-testid="new-project-title">
-            <Field type="text" name="projectTitle">
-              {({ field, meta }: FieldProps) => {
-                return (
-                  <input
-                    ref={titleRef}
-                    type="text"
-                    {...field}
-                    placeholder="Project Title"
-                    className={`${meta.touched && meta.error ? "error" : ""}`}
-                  />
-                )
-              }}
-            </Field>
-          </FiledHolder>
-          <FiledHolder data-testid="new-project-title">
-            <Field type="text" name="projectColor">
-              {({ field, meta }: FieldProps) => {
-                return (
-                  <select
-                    {...field}
-                    className={`${meta.touched && meta.error ? "error" : ""} color`}
-                    style={{ backgroundColor: field.value }}
-                  >
-                    {colorOptions.map(colorItem => (
-                      <option
-                        key={colorItem}
-                        value={colorItem}
-                        style={{ backgroundColor: color[colorItem] }}
-                      >
-                        {colorItem}
-                      </option>
-                    ))}
-                  </select>
-                )
-              }}
-            </Field>
-          </FiledHolder>
-          <button data-testid="task-forum-save-button" type="submit">
-            <SVG.Check />
-          </button>
-          <button data-testid="task-forum-cancel-button" onClick={() => setEditMode(false)}>
-            <SVG.Cross />
-          </button>
-        </Form>
+        {formik => (
+          <Form>
+            <FiledHolder data-testid="new-project-title">
+              <Field type="text" name="projectTitle">
+                {({ field, meta }: FieldProps) => {
+                  return (
+                    <input
+                      ref={titleRef}
+                      type="text"
+                      {...field}
+                      placeholder="Project Title"
+                      className={`${meta.touched && meta.error ? "error" : ""}`}
+                    />
+                  )
+                }}
+              </Field>
+            </FiledHolder>
+            <FiledHolder data-testid="new-project-title">
+              <Field type="text" name="projectColor">
+                {({ field, meta }: FieldProps) => {
+                  return (
+                    <select
+                      {...field}
+                      className={`${meta.touched && meta.error ? "error" : ""} color`}
+                      style={{ backgroundColor: color[field.value] }}
+                    >
+                      {colorOptions.map(colorItem => (
+                        <option
+                          key={colorItem}
+                          value={colorItem}
+                          style={{ backgroundColor: color[colorItem] }}
+                        >
+                          {colorItem}
+                        </option>
+                      ))}
+                    </select>
+                  )
+                }}
+              </Field>
+            </FiledHolder>
+            <button data-testid="task-forum-save-button" type="submit" disabled={!formik.isValid}>
+              <SVG.Check />
+            </button>
+            <button data-testid="task-forum-cancel-button" onClick={() => visible(false)}>
+              <SVG.Cross />
+            </button>
+          </Form>
+        )}
       </Formik>
     </Holder>
   )
@@ -132,8 +129,10 @@ const Holder = styled.div`
     font-size: 0.9vw;
     padding: 0;
     text-align: center;
-    margin-right: 0.7vw;
+    margin-right: 0.6vw;
     height: 3.7vh;
+    cursor: pointer;
+    /* padding: 0 4.1vw; */
     option {
       color: #000;
     }
@@ -161,11 +160,24 @@ const Holder = styled.div`
     background: none;
     opacity: 0.6;
     cursor: pointer;
+    &:nth-of-type(1) svg {
+      fill: #189f25;
+    }
+    &:nth-of-type(2) svg {
+      fill: red;
+    }
     svg {
       width: 1.5vw;
     }
     &:hover {
       opacity: 1;
+    }
+    &:disabled {
+      cursor: default;
+      opacity: 0.8;
+      svg {
+        fill: ${color.gray};
+      }
     }
   }
   .error {

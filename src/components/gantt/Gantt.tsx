@@ -64,12 +64,12 @@ const MonthSelector = styled.div`
 
   span {
     font-size: 1.2vw;
-    color: ${color.gray};
+    color: ${color.white};
     ${font.bold};
     width: 10vw;
     text-align: center;
   }
-  background-color: ${color.offWhiteDark};
+  background-color: ${color.blue};
   width: 100%;
   padding: 0.6vw 0vw;
   button {
@@ -78,7 +78,7 @@ const MonthSelector = styled.div`
     justify-content: center;
     width: 2vw;
     height: 2vw;
-    background-color: ${lighten(0.55, color.blue)};
+    background-color: ${lighten(0.45, color.blue)};
     cursor: pointer;
     border-radius: 50%;
     border: none;
@@ -89,13 +89,15 @@ const MonthSelector = styled.div`
       fill: ${lighten(0.2, color.blue)};
     }
     &:hover {
-      background-color: ${lighten(0.45, color.blue)};
+      background-color: ${lighten(0.65, color.blue)};
       svg {
         fill: ${color.blue} !important;
       }
     }
     &:disabled {
       opacity: 0.2;
+      background-color: ${lighten(0.45, color.blue)} !important;
+      cursor: default;
     }
   }
 `

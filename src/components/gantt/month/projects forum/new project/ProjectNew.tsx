@@ -1,5 +1,6 @@
 import styled from "@emotion/styled"
 import { Formik, Form, Field, FieldProps } from "formik"
+import { month } from "@types"
 import { useEffect, useRef } from "react"
 import { darken } from "polished"
 import { useDispatch } from "react-redux"
@@ -27,138 +28,158 @@ const validation = yup.object().shape({
 const colorOptions = ["cyan", "green", "blue", "purple", "red", "orange", "black", "yellow", "pink"]
 
 interface component {
-  month: any
-  setNewProjectState: Function
+  month: month
+  visible: Function
 }
-const ProjectNew: React.FC<component> = ({ month, setNewProjectState }) => {
+const ProjectNew: React.FC<component> = ({ month, visible }) => {
   let Days: any[] = []
   for (let i = 0; i < month.days; i++) {
     Days.push(<option key={i}>{i + 1}</option>)
   }
   const titleRef = useRef(null)
+  const form = useRef(null)
 
   useEffect(() => {
     titleRef.current.focus()
-    document.addEventListener("keyup", e => e.key === "Escape" && setNewProjectState(false), false)
+    function clickAway(e) {
+      if (form.current && !form.current.contains(e.target)) {
+        visible(false)
+      }
+    }
+    function keyUpEscape(e) {
+      if (e.key === "Escape") {
+        visible(false)
+      }
+    }
+    document.addEventListener("keyup", keyUpEscape)
+    document.addEventListener("mouseup", clickAway)
+    return () => {
+      document.removeEventListener("keyup", keyUpEscape)
+      document.removeEventListener("mouseup", clickAway)
+    }
   }, [])
   const dispatch = useDispatch()
   function handelSubmit(data: object) {
     dispatch(addProject({ id: [month.id], ...data }))
-    setNewProjectState(false)
+    visible(false)
   }
   return (
-    <Holder data-testid="new-project-form">
+    <Holder data-testid="new-project-form" ref={form}>
       <Formik
         initialValues={initialValues}
         validationSchema={validation}
         onSubmit={(data: object) => handelSubmit(data)}
       >
-        <Form>
-          <Row>
-            <FiledHolder data-testid="new-project-title">
-              <label htmlFor="projectTitle">Project Title</label>
-              <Field type="text" name="projectTitle">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <input
-                      ref={titleRef}
-                      type="text"
-                      {...field}
-                      placeholder="Project Title"
-                      className={`${meta.touched && meta.error ? "error" : ""}`}
-                    />
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-            <FiledHolder data-testid="new-project-title">
-              <label htmlFor="projectColor">Project Color</label>
+        {formik => (
+          <Form>
+            <Row>
+              <FiledHolder data-testid="new-project-title">
+                <label htmlFor="projectTitle">Project Title</label>
+                <Field type="text" name="projectTitle">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <input
+                        ref={titleRef}
+                        type="text"
+                        {...field}
+                        placeholder="Project Title"
+                        className={`${meta.touched && meta.error ? "error" : ""}`}
+                      />
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+              <FiledHolder data-testid="new-project-color">
+                <label htmlFor="projectColor">Project Color</label>
 
-              <Field type="text" name="projectColor">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <select
-                      {...field}
-                      className={`${meta.touched && meta.error ? "error" : ""} color`}
-                      style={{ backgroundColor: field.value }}
-                    >
-                      {colorOptions.map(colorItem => (
-                        <option
-                          key={colorItem}
-                          value={colorItem}
-                          style={{ backgroundColor: color[colorItem] }}
-                        >
-                          {colorItem}
-                        </option>
-                      ))}
-                    </select>
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-          </Row>
-          <Row>
-            <FiledHolder data-testid="new-project-task-title">
-              <label htmlFor="taskTitle">Task Title</label>
-              <Field type="text" name="taskTitle">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <input
-                      type="text"
-                      {...field}
-                      placeholder="Task Title"
-                      className={`${meta.touched && meta.error ? "error" : ""}`}
-                    />
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-            <FiledHolder data-testid="new-project-task-start-date">
-              <label htmlFor="taskStartDate">Start</label>
-              <Field as="select" name="taskStartDate">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                      {Days}
-                    </select>
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-            <FiledHolder data-testid="new-project-task-end-date">
-              <label htmlFor="taskEndDate">End </label>
-              <Field as="select" name="taskEndDate">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
-                      {Days}
-                    </select>
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-            <FiledHolder data-testid="new-project-task-percentage">
-              <label htmlFor="taskPercentage">Perc</label>
-              <Field name="taskPercentage" type="number" max="100" min="0">
-                {({ field, meta }: FieldProps) => {
-                  return (
-                    <input
-                      type="number"
-                      {...field}
-                      className={`${meta.touched && meta.error ? "error" : ""}`}
-                    />
-                  )
-                }}
-              </Field>
-            </FiledHolder>
-          </Row>
-          <Row>
-            <Button data-testid="new-project-add-button">Add</Button>
-            <Button data-testid="new-project-add-button" onClick={() => setNewProjectState(false)}>
-              Cancel
-            </Button>
-          </Row>
-        </Form>
+                <Field type="text" name="projectColor">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <select
+                        {...field}
+                        className={`${meta.touched && meta.error ? "error" : ""} color`}
+                        style={{ backgroundColor: color[field.value] }}
+                      >
+                        {colorOptions.map(colorItem => (
+                          <option
+                            key={colorItem}
+                            value={colorItem}
+                            style={{ backgroundColor: color[colorItem] }}
+                          >
+                            {colorItem}
+                          </option>
+                        ))}
+                      </select>
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+            </Row>
+            <Row>
+              <FiledHolder data-testid="new-project-task-title">
+                <label htmlFor="taskTitle">Task Title</label>
+                <Field type="text" name="taskTitle">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <input
+                        type="text"
+                        {...field}
+                        placeholder="Task Title"
+                        className={`${meta.touched && meta.error ? "error" : ""}`}
+                      />
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+              <FiledHolder data-testid="new-project-task-start-date">
+                <label htmlFor="taskStartDate">Start</label>
+                <Field as="select" name="taskStartDate">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
+                        {Days}
+                      </select>
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+              <FiledHolder data-testid="new-project-task-end-date">
+                <label htmlFor="taskEndDate">End </label>
+                <Field as="select" name="taskEndDate">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <select {...field} className={`${meta.touched && meta.error ? "error" : ""}`}>
+                        {Days}
+                      </select>
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+              <FiledHolder data-testid="new-project-task-percentage">
+                <label htmlFor="taskPercentage">Perc</label>
+                <Field name="taskPercentage" type="number" max="100" min="0">
+                  {({ field, meta }: FieldProps) => {
+                    return (
+                      <input
+                        type="number"
+                        {...field}
+                        className={`${meta.touched && meta.error ? "error" : ""}`}
+                      />
+                    )
+                  }}
+                </Field>
+              </FiledHolder>
+            </Row>
+            <Row>
+              <Button data-testid="new-project-add-button" disabled={!formik.isValid}>
+                Add
+              </Button>
+              <Button data-testid="new-project-cancel-button" onClick={() => visible(false)}>
+                Cancel
+              </Button>
+            </Row>
+          </Form>
+        )}
       </Formik>
     </Holder>
   )
@@ -229,9 +250,9 @@ const Button = styled.button`
     ${font.bold}
     font-size: 1.2vw;
     color: #fff;
-    background-color: ${darken(0.2, color.green)};
+    background-color: ${darken(0, color.green)};
     &:hover {
-      background-color: ${color.green};
+      background-color: ${darken(-0.1, color.green)};
     }
   }
   &:nth-of-type(2) {
@@ -242,6 +263,11 @@ const Button = styled.button`
     &:hover {
       background-color: ${color.red};
     }
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+    background-color: ${color.gray} !important;
   }
 `
 const Row = styled.div`

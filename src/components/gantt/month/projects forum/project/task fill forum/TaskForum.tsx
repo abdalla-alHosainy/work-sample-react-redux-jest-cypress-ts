@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { task } from "@types"
+import { month } from "@types"
 import { Formik, Form, Field, FieldProps, ErrorMessage, FormikProps } from "formik"
 import * as yup from "yup"
 import { useDispatch } from "react-redux"
@@ -7,33 +7,36 @@ import { editTask, addTask } from "@redux_local/ganttSlice"
 import SVG from "@assets/svg"
 import theme from "@style"
 import { useEffect, useRef } from "react"
+import _ from "lodash"
 const color = theme.gantt.color
 const font = theme.gantt.font
 
 interface component {
-  task: task
-  days: number
-  editModeState: Function
+  // task: task
+  // days: number
+  visible: Function
   editOrNew: "edit" | "new"
-  idsArray: [number, string, string]
+  ids: [number, string, string]
+  month: month
 }
-const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, editOrNew }) => {
+const TaskForum: React.FC<component> = ({ month, visible, ids, editOrNew }) => {
   const dispatch = useDispatch()
   const titleRef = useRef(null)
-
+  const task = _.find(_.find(month.projects, p => p.id === ids[1]).tasks, t => t.id === ids[2])
   useEffect(() => {
     titleRef.current.focus()
     document.addEventListener("keyup", e => e.key === "Escape" && handelCancel(), false)
   }, [])
   let Days: any[] = []
-  for (let i = 0; i < days; i++) {
+  for (let i = 0; i < month.days; i++) {
     Days.push(<option key={i}>{i + 1}</option>)
   }
+  const isEdit = editOrNew === "edit"
   const initialValues = {
-    title: task.title,
-    startDate: task.startDate,
-    endDate: task.endDate,
-    percentage: task.percentage,
+    title: isEdit ? task.title : "",
+    startDate: isEdit ? task.startDate : "1",
+    endDate: isEdit ? task.endDate : "2",
+    percentage: isEdit ? task.percentage : 0,
   }
   const validation = yup.object().shape({
     title: yup.string().required("Required!"),
@@ -46,7 +49,7 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
     if (editOrNew === "edit") {
       dispatch(
         editTask({
-          ids: idsArray,
+          ids,
           ...data,
         })
       )
@@ -55,7 +58,7 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
     if (editOrNew === "new") {
       dispatch(
         addTask({
-          ids: idsArray,
+          ids,
           ...data,
         })
       )
@@ -64,7 +67,7 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
     handelCancel()
   }
   function handelCancel() {
-    editModeState(false)
+    visible(false)
   }
   return (
     <Holder data-testid="task-forum">
@@ -73,8 +76,8 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
         validationSchema={validation}
         onSubmit={(value: any) => handelSubmit(value)}
       >
-        {(formik: any) => {
-          console.log(formik.values)
+        {formik => {
+          // console.log(formik)
           return (
             <Form>
               <FiledHolder data-testid="task-form-title">
@@ -127,7 +130,7 @@ const TaskForum: React.FC<component> = ({ task, days, editModeState, idsArray, e
                   }}
                 </Field>
               </FiledHolder>
-              <button data-testid="task-forum-save-button" type="submit">
+              <button data-testid="task-forum-save-button" type="submit" disabled={!formik.isValid}>
                 <SVG.Check />
               </button>
               <button data-testid="task-forum-cancel-button" onClick={() => handelCancel()}>
@@ -152,10 +155,23 @@ const Holder = styled.div`
     border: none;
     background: none;
     cursor: pointer;
+    &:nth-of-type(1) svg {
+      fill: #189f25;
+    }
+    &:nth-of-type(2) svg {
+      fill: red;
+    }
     &:hover {
       opacity: 1;
     }
     padding: 0.2vw;
+    &:disabled {
+      cursor: default;
+      opacity: 0.8;
+      svg {
+        fill: ${color.gray};
+      }
+    }
   }
   input,
   select,
